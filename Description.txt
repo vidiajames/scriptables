@@ -1,0 +1,37 @@
+Scriptable Values expands on the ideas presented by Ryan Hipple at GDC 2017 https://www.youtube.com/watch?v=raQ3iHhE_Kk
+
+One of the ideas presented is that values can be abstracted out of classes that use them by holding them in Scriptable Objects.
+- Class A assigns the value
+- Classes B and C listen for the OnValueUpdated event on the value, and react accordingly
+A major advantage to using Scriptable Values is that Game Designers can create and modify values without interacting with the Objects that use them, though they do need to be assigned in the inspector.
+
+My own addition is Persistant Scriptable Values, and extension of Scriptable Values that save and load their data from a Persistance Manager: another Scriptable Object that controls how data is saved and loaded.
+- To use a Persistant Scriptable Value you will need to create an asset for Persistance Manager of your choice, and a Persitant Scriptable Value, on which you must assign the Key and Persistance Manager.
+Some advantages of Persitant Scriptable Values are:
+- the ability to assign a different Persistance Manager for the type of persistance needed. 
+- the ability to swap existing Scriptable Values with a Persistant
+For example: We use a Player Prefs Persistance Manager for player settings such as volume, mute, language Scriptable Values, and a Binary Serialization Peristance Manager for game state.
+
+I have included an example scene demonstrating the use of Persistant Scriptable Values where you can set a float value via the onscreen buttons, causing the bar to fill to the correct amount, and the value will persist between sessions.
+
+The relevant files are:
+
+Scritpables/Scripts/Values/ScriptableValue
+- A generic abstract class that Scriptable Values implement
+Scriptables/Scripts/PersistantValues/PersitantScriptableValueFloat
+- The class for the Persitant Scriptable Value being used in the example
+Scriptables/Scripts/PersistantValues/Manager/PersistanceManager
+- The abstract class that Perstance Managers extend
+Scriptables/Examples/Scripts/Persitance/PlayerPrefsPersistanceManger
+- The class that extends PersistanceManager to save and load values into Player Prefs
+
+Scriptables/Examples/Scripts/ImageFill/ImageFillFloat
+- The component that exists on the Image and fills it to the correct amount when the Persistant Scriptable Value "Health Current Float" is updated
+Scriptables/Examples/Health/Health Current Float
+- The Persitant Scriptable Value used in the example
+Scriptables/Examples/Persitance/Player Prefs Persistance Manager
+- This is the Scriptable Object representation of the PlayerPrefsPersistanceManager which can be assigned to the Persistant Scriptable Value
+
+In the scene you can find lightweight components that interact directly with the Persistant Scriptable Value "Health Current Float"
+- ImageFill_Float is the health bar
+- Button_SetFloat_ sets the Health to a value
